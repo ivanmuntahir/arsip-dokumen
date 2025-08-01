@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListOutgoingMails extends ListRecords
 {
     protected static string $resource = OutgoingMailResource::class;
+    protected static ?string $title = 'Data Surat Keluar';
 
     protected function getHeaderActions(): array
     {

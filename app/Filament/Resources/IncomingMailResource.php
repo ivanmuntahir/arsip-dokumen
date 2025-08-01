@@ -27,6 +27,7 @@ class IncomingMailResource extends Resource
     protected static ?string $model = IncomingMail::class;
 
     protected static ?string $navigationLabel = 'Surat Masuk';
+    protected static ?string $navigationGroup = 'Manajemen Surat';
     protected static ?string $navigationIcon = 'tabler-mail-down';
 
     public static function form(Form $form): Form

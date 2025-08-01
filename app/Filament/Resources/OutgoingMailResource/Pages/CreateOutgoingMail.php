@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateOutgoingMail extends CreateRecord
 {
     protected static string $resource = OutgoingMailResource::class;
+    protected static ?string $title = 'Buat Surat Keluar Baru';
 }

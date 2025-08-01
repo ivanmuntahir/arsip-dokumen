@@ -18,6 +18,7 @@ class InstitutionResource extends Resource
     protected static ?string $model = Institution::class;
 
     protected static ?string $navigationLabel = 'Daftar Institusi';
+    protected static ?string $navigationGroup = 'Manajement Institusi';
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 

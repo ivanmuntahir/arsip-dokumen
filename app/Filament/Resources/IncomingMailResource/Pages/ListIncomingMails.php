@@ -11,6 +11,7 @@ use Filament\Actions\Action;
 class ListIncomingMails extends ListRecords
 {
     protected static string $resource = IncomingMailResource::class;
+    protected static ?string $title = 'Data Surat Masuk';
 
     protected function getHeaderActions(): array
     {

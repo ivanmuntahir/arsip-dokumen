@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditOutgoingMail extends EditRecord
 {
     protected static string $resource = OutgoingMailResource::class;
+    protected static ?string $title = 'Ubah Surat Keluar';
 
     protected function getHeaderActions(): array
     {

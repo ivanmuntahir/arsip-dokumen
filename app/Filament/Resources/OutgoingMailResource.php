@@ -18,6 +18,7 @@ class OutgoingMailResource extends Resource
     protected static ?string $model = OutgoingMail::class;
 
     protected static ?string $navigationLabel = 'Surat Keluar';
+    protected static ?string $navigationGroup = 'Manajemen Surat';
 
     protected static ?string $navigationIcon = 'tabler-mail-up';
 
