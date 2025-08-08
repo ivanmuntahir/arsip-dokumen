@@ -15,15 +15,14 @@ class PDFController extends Controller
 
         $data = [
             'title' => 'Rekap Surat Masuk',
-            'laporans' => $laporans, // Change 'file' to 'laporans'
+            'laporans' => $laporans,
         ];
 
-        $pdf = Pdf::loadView('rekap-surat-masuk', $data); // Use the Facade
+        $pdf = Pdf::loadView('rekap-surat-masuk', $data);
         return $pdf->download('rekap-surat-masuk.pdf');
     }
 
     public function downloadpdfFiltered(Request $request){
-        // Validasi input tanggal
         $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
@@ -32,14 +31,13 @@ class PDFController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        // Mengambil data berdasarkan rentang tanggal
         $laporans = IncomingMail::with('pengirim')
                                 ->whereBetween('tanggal_terima', [$startDate, $endDate])
                                 ->get();
 
         $totalSurat = $laporans->count();
 
-        $logoPath = public_path('storage/assets/images/logo.png');
+        $logoPath = storage_path('app/public/assets/images/logo.png');
         $logoBase64 = null;
 
         if (File::exists($logoPath)) {
@@ -47,30 +45,26 @@ class PDFController extends Controller
             $data = File::get($logoPath);
             $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         } else {
-            // Ini penting untuk debugging: jika file tidak ditemukan, kita tahu itu masalah path
-            Log::error("Logo file not found for base64 encoding at: " . $logoPath);
-            dd($logoPath);
-            // Anda bisa tambahkan dd($logoPath); di sini untuk melihat path yang salah
-        }
-        $subTitle = 'Total Surat Masuk: ' . $totalSurat . ' Surat';
 
+            Log::error("Logo file not found at: " . $logoPath);
+
+        }
+
+        $subTitle = 'Total Surat Masuk: ' . $totalSurat . ' Surat';
         $downloadTimestamp = 'Diunduh pada: ' . date('H:i') . ' WIB, ' . date('d-m-Y');
 
         $data = [
             'title' => 'Rekap Surat Masuk Periode ' . $startDate . ' s/d ' . $endDate,
             'subtitle' => $subTitle,
             'laporans' => $laporans,
-            'start_date' => $startDate, // Bisa ditambahkan untuk ditampilkan di Blade
+            'start_date' => $startDate,
             'end_date' => $endDate,
             'download_timestamp' => $downloadTimestamp,
             'logo_path' => $logoPath,
             'logo_base64' => $logoBase64,
-
-              // Bisa ditambahkan untuk ditampilkan di Blade
         ];
 
         $pdf = Pdf::loadView('rekap-surat-masuk-filtered', $data);
-        // Nama file PDF bisa disesuaikan dengan rentang tanggal
         return $pdf->download('rekap-surat-masuk_' . $startDate . '_to_' . $endDate . '.pdf');
     }
 }
