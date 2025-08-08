@@ -8,6 +8,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\IncomingMail;
 use App\Models\OutgoingMail;
 use Carbon\Carbon;
+use Filament\Support\Colors\Color;
 
 class StatsOverview extends BaseWidget
 {
@@ -33,6 +34,16 @@ class StatsOverview extends BaseWidget
             ->where('klasifikasi', 'biasa')
             ->count();
 
+        $suratMasukKlasifikasiSegera = IncomingMail::query()
+            ->whereBetween('tanggal_kirim', [$startDate, $endDate])
+            ->where('klasifikasi', 'segera')
+            ->count();
+
+        $suratMasukKlasifikasiSangatSegera = IncomingMail::query()
+            ->whereBetween('tanggal_kirim', [$startDate, $endDate])
+            ->where('klasifikasi', 'sangat_segera')
+            ->count();
+
         return [
             Stat::make('Total Surat Masuk', $suratMasukCount)
                 ->description('Jumlah surat masuk yang telah diterima')
@@ -41,8 +52,13 @@ class StatsOverview extends BaseWidget
                 ->description('Jumlah surat keluar yang telah dikirim')
                 ->color('warning'),
             Stat::make('Surat Masuk (Biasa)', $suratMasukKlasifikasiBiasa)
-                ->description('Jumlah surat masuk dengan klasifikasi biasa')
-                ->color('info'),
+                ->description('Jumlah surat masuk dengan klasifikasi biasa'),
+            Stat::make('Surat Masuk (Segera)', $suratMasukKlasifikasiSegera)
+                ->description('Jumlah surat masuk dengan klasifikasi segera')
+                ->color(Color::Cyan),
+            Stat::make('Surat Masuk (Sangat Segera)', $suratMasukKlasifikasiSangatSegera)
+                ->description('Jumlah surat masuk dengan klasifikasi sangat segera')
+                ->color('danger'),
         ];
     }
 }
